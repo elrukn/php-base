@@ -42,7 +42,13 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 class        Module
 implements   AutoloaderProviderInterface
 {
-    public function getAutoloaderConfig()
+
+
+
+    /*
+     * Autoloader configuration
+     */
+    public function getAutoloaderConfig ()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
@@ -51,5 +57,15 @@ implements   AutoloaderProviderInterface
                 ),
             ),
         );
+    }
+
+
+
+    /*
+     * Module configuration
+     */
+    public function getConfig ()
+    {
+        return array();
     }
 }
