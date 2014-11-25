@@ -42,15 +42,31 @@ class Loader
      * Removes namespace, converts remaining class name to path and tries said
      * path for file existence.
      *
+     *
      * Example usage:
      *
-     *     namespace My\Module;
+     *     namespace VendorName\ModuleName;
      *
      *     function autoload ($className) {
      *         \Teon\Base\Loader::autoloaderTemplate($className, __NAMESPACE__, __DIR__."/src");
      *     }
      *
      *     spl_autoload_register(__NAMESPACE__ . '\autoload', true, false);
+     *
+     *
+     * Expected name space:
+     *     VendorName\ModuleName\SubNameSpace\ClassName
+     *
+     *
+     * Expected directory structure:
+     *     ./vendor/VendorName/ModuleName/src/SubNameSpace/ClassName
+     *
+     *
+     * @param    string   Class name to search for
+     * @param    string   Namespace that this autoloader handles
+     * @param    string   Source code directory for given namespace
+     *
+     * @return   void
      */
     static function autoloaderTemplate ($className, $nameSpace, $srcDir)
     {
