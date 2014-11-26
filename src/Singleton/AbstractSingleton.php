@@ -69,22 +69,23 @@ abstract class AbstractSingleton
      */
     public static function getInstance ()
     {
-        static $instance = false;
+        // If this class is used for multiple singletons, we need to keep
+        // track of multiple singleton objects, one for each class name
+        static $instances = array();
 
-        // If already instantiated, use that
-        if (false !== $instance) {
-            return $instance;
-        }
-
-        // Otherwise create new instance
-        // Get class name to create: Use late static binding here,
+        // Get class name to use. Use late static binding here,
         // if method is overriden by derived classes.
         $singletonClassName = static::_getInstanceClassName();
 
-        // Now create that singleton instance
-        $instance = new $singletonClassName (self::_getInstanceFuseValue());
+        // If already instantiated, use that
+        if (isset($instances[$singletonClassName])) {
+            return $instances[$singletonClassName];
+        }
 
-        return $instance;
+        // Otherwise create new instance
+        $instances[$singletonClassName] = new $singletonClassName (self::_getInstanceFuseValue());
+
+        return $instances[$singletonClassName];
     }
 
 
