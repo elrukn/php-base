@@ -83,7 +83,7 @@ abstract class AbstractSingleton
         }
 
         // Otherwise create new instance
-        $instances[$singletonClassName] = new $singletonClassName (self::_getInstanceFuseValue());
+        $instances[$singletonClassName] = new $singletonClassName (static::_getInstanceFuseValue());
 
         return $instances[$singletonClassName];
     }
@@ -149,6 +149,11 @@ abstract class AbstractSingleton
         // Protect against accidental multiple instantiations
         if ($getInstanceFuse != self::_getInstanceFuseValue()) {
             throw new \Exception(static::_getInstanceClassName() ." is a singleton. Use ::getInstance() method to retrieve an instance");
+        }
+
+        // Call initialization method if exists
+        if (is_callable(array($this, '_instanceInit'))) {
+            $this->_instanceInit();
         }
     }
 }
