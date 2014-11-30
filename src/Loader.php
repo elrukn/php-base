@@ -21,14 +21,14 @@
 
 
 /*
- * This software is namespaced
+ * Namespace definition
  */
 namespace Teon\Base;
 
 
 
 /*
- * Class: PHP Loader (autoloader)
+ * Class definition
  */
 class Loader
 {
