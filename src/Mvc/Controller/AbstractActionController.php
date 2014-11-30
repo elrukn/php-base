@@ -149,6 +149,34 @@ extends   \Zend\Mvc\Controller\AbstractActionController
             array('action' => $action)
         );
 
+        // Do the forward
         return $this->forward()->dispatch($controllerShortName, $params2pass);
+    }
+
+
+
+    /*
+     * HELPER: Redirect to action in the same controller
+     *
+     * @param    string   Action to redirect to
+     * @param    array    Parameters to pass (optional)
+     * @return   \Zend\Mvc\Controller\Plugin\FlashMessenger
+     */
+    protected function redirectAction ($action, $params=array())
+    {
+        // Get own controller name
+        if (!preg_match("/([_a-zA-Z0-9]+)\$/", get_class($this), $m)) {
+            throw new \TeamDoe\Controller\Exception("Unable to extract short controller name: ". get_class($this));
+        }
+        $controllerShortName = strtolower(preg_replace('/Controller$/', '', $m[1]));
+
+        // Combine parameters - if action is explicitly specified in params it is overriden
+        $params2pass = array_merge(
+            $params,
+            array('action' => $action)
+        );
+
+        // Do the redirect
+        return $this->redirect()->toRoute($controllerShortName, $params2pass);
     }
 }
