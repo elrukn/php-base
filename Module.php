@@ -68,4 +68,17 @@ implements   AutoloaderProviderInterface
     {
         return array();
     }
-}
+
+
+
+    /*
+     * View helper registration
+     */
+    public function getViewHelperConfig()
+    {
+        return array(
+           'invokables' => array(
+              'formErrors' => __NAMESPACE__ .'\View\Helper\FormErrors',
+           ),
+        );
+   }}
