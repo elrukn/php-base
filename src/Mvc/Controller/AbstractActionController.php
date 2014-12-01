@@ -179,4 +179,46 @@ extends   \Zend\Mvc\Controller\AbstractActionController
         // Do the redirect
         return $this->redirect()->toRoute($controllerShortName, $params2pass);
     }
+
+
+
+    /*
+     * HELPER: Get GET parameter or throw an exception
+     *
+     * @param    string   Parameter name to search for
+     * @param    string   Custom exception message (optional)
+     * @return   mixed    Parameter value
+     */
+    protected function getParamOrException ($paramName, $customExceptionMsg=null)
+    {
+        $paramValue = $this->params()->fromQuery($paramName);
+
+        if (NULL === $paramValue) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL parameter not found: $paramName");
+            throw new Exception($eMsg);
+        }
+
+        return $paramValue;
+    }
+
+
+
+    /*
+     * HELPER: Get GET parameter and check if non-empty, or throw an exception
+     *
+     * @param    string   Parameter name to search for
+     * @param    string   Custom exception message (optional)
+     * @return   mixed    Parameter value
+     */
+    protected function getParamNonEmptyOrException ($paramName, $customExceptionMsg=null)
+    {
+        $paramValue = $this->getParamOrException($paramName, $customExceptionMsg);
+
+        if (empty($paramValue)) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL parameter value missing: $paramName");
+            throw new Exception($eMsg);
+        }
+
+        return $paramValue;
+    }
 }
