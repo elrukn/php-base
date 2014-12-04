@@ -38,7 +38,7 @@ abstract class AbstractEntityCached
     /*
      * Id
      */
-    protected $_id = false;
+    protected $id = false;
 
 
 
@@ -78,7 +78,7 @@ abstract class AbstractEntityCached
      */
     public function __construct ($id)
     {
-        $this->_id = $id;
+        $this->id = $id;
     }
 
 
@@ -90,6 +90,6 @@ abstract class AbstractEntityCached
      */
     public function getId ()
     {
-        return $this->_id;
+        return $this->id;
     }
 }
