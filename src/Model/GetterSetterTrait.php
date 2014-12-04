@@ -116,7 +116,7 @@ trait   GetterSetterTrait
         }
 
         // Check if parent defined __call - use that in non ^(get|set) case
-        if (is_callable(array(parent, '__call'))) {
+        if (is_callable('parent::__call')) {
             return parent::__call($name, $args);
         }
     }
