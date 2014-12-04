@@ -52,4 +52,18 @@ class Tools
 
         return $randomString;
     }
+
+
+
+    /*
+     * Get only last part of namespaced class name
+     *
+     * @param    mixed    Full namespaced class name or object
+     * @return   string   Last part of namespaced class name
+     */
+    static function getShortClassName ($classNameFullOrObject)
+    {
+        $reflect = new \ReflectionClass($classNameFullOrObject);
+        return $reflect->getShortName();
+    }
 }

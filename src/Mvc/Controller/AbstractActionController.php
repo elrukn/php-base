@@ -183,6 +183,26 @@ extends   \Zend\Mvc\Controller\AbstractActionController
 
 
     /*
+     * HELPER: Get URL to action in the same controller
+     *
+     * @param    string   Action to generate URL for
+     * @return   string   Generated URL
+     */
+    protected function urlAction ($action)
+    {
+        // Get own controller name
+        if (!preg_match("/([_a-zA-Z0-9]+)\$/", get_class($this), $m)) {
+            throw new \TeamDoe\Controller\Exception("Unable to extract short controller name: ". get_class($this));
+        }
+        $controllerShortName = strtolower(preg_replace('/Controller$/', '', $m[1]));
+
+        // Return generated URL
+        return $this->url()->fromRoute($controllerShortName, array('action' => $action));
+    }
+
+
+
+    /*
      * HELPER: Get GET parameter or throw an exception
      *
      * @param    string   Parameter name to search for
