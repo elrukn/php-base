@@ -79,6 +79,7 @@ implements   AutoloaderProviderInterface
         return array(
            'invokables' => array(
               'formErrors' => __NAMESPACE__ .'\View\Helper\FormErrors',
+              'pageTitle'  => __NAMESPACE__ .'\View\Helper\PageTitle',
            ),
         );
    }}
