@@ -95,34 +95,6 @@ trait   GetterSetterTrait
 
 
 
-
-
-    /**
-     * Magic method: call (used for getPropName() and setPropName())
-     *
-     * Calls either getter or setter
-     *
-     * @param    string   Property name to get
-     * @throws   Exception
-     * @return   mixed
-     */
-    public function __call ($name, $args)
-    {
-        if (preg_match('/(get|set)(.+)$/', $name, $m)) {
-            $action = $m[1];
-            $propertyName = lcfirst($m[2]);
-            array_unshift($args, $propertyName);
-            return call_user_func_array(array($this, "__$action"), $args);
-        }
-
-        // Check if parent defined __call - use that in non ^(get|set) case
-        if (is_callable('parent::__call')) {
-            return parent::__call($name, $args);
-        }
-    }
-
-
-
     /**
      * Magic method: get entity property
      *
