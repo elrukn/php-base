@@ -23,41 +23,33 @@
 /*
  * Namespace definition
  */
-namespace Teon\Base;
+namespace Teon\Base\Stdlib;
 
 
 
 /*
- * Class definition - LEGACY, USE Stdlib\* INSTEAD
+ * Class definition
  */
-class Tools
+class StringUtils
 {
 
 
 
     /*
-     * Generate random string - LEGACY ALIAS
+     * Generate random string
      *
      * @param    int      Desired string length
      * @return   string   Random string
      */
     static function generateRandomString ($length=32)
     {
-        trigger_error("This class is deprecated. Use \Teon\Base\Stdlib\* instead.", E_USER_DEPRECATED);
-        return Stdlib\StringUtils::generateRandomString($length);
-    }
+        $characters   = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
 
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
 
-
-    /*
-     * Get only last part of namespaced class name - LEGACY ALIAS
-     *
-     * @param    mixed    Full namespaced class name or object
-     * @return   string   Last part of namespaced class name
-     */
-    static function getShortClassName ($classNameFullOrObject)
-    {
-        trigger_error("This class is deprecated. Use \Teon\Base\Stdlib\* instead.", E_USER_DEPRECATED);
-        return Stdlib\ClassUtils::getShortClassName($classNameFullOrObject);
+        return $randomString;
     }
 }
