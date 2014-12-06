@@ -28,11 +28,10 @@ namespace Teon\Base\Form;
 use       \Zend\Form\Element as ZFE;
 
 
-
 /*
  * Class definition
  */
-abstract class   AbstractForm
+abstract class   AbstractFormOld
 extends          \Zend\Form\Form
 implements       \Zend\InputFilter\InputFilterProviderInterface
 {
@@ -61,25 +60,15 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
         parent::__construct($name, $options);
 
         // CSRF protection on all forms
-        $this->addElementCsrf();
+        $el = new ZFE\Csrf('csrfSecurity');
 
-        // Add custom elements and validators
-        $this->addElementsAndValidators();
+        // Do not add label to hidden elements, it renders if form is rendered with ZfcTwBootstrap
+        //$el->setOption('label', 'CSRF Security');
+        $this->add($el);
 
         // Add input filters
         $this->setInputFilter($this->getInputFilterSpecification());
     }
-
-
-
-    /*
-     * Populate form with elements and validators
-     *
-     * This method must be implemented.
-     *
-     * @return   void
-     */
-    abstract public function addElementsAndValidators ();
 
 
 
@@ -102,27 +91,5 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
      *
      * @return   array   Array of input filters
      */
-    public function getInputFilterSpecification ()
-    {
-        if (NULL === $this->inputFilterSpecification) {
-//            throw new Exception("Input filter specification is undefined");
-        }
-        return $this->inputFilterSpecification;
-    }
-
-
-
-    /*
-     * Add element - CSRF
-     *
-     * @return   string
-     */
-    protected function addElementCsrf ()
-    {
-        $el = new ZFE\Csrf('csrfSecurity');
-
-        // Do not add label to hidden elements, it renders if form is rendered with ZfcTwBootstrap
-        //$el->setOption('label', 'CSRF Security');
-        $this->add($el);
-    }
+    abstract public function getInputFilterSpecification ();
 }
