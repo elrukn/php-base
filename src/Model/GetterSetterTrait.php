@@ -96,6 +96,19 @@ trait   GetterSetterTrait
 
 
     /**
+     * Get all entity properties
+     *
+     * @return   arrray
+     */
+    public function getEntityData ()
+    {
+        $Entity = $this->___getterSetterGetEntity();
+        return $Entity->toArray();
+    }
+
+
+
+    /**
      * Magic method: get entity property
      *
      * Returns entity property
