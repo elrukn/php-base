@@ -203,42 +203,110 @@ extends   \Zend\Mvc\Controller\AbstractActionController
 
 
     /*
+     * HELPER: Get routing parameter, or null
+     *
+     * @param    string            Parameter name to search for
+     * @return   string|int|null   Parameter value, if found
+     */
+    protected function getParam ($name)
+    {
+        return $this->params($name);
+    }
+
+
+
+    /*
+     * HELPER: Get GET parameter, or null
+     *
+     * @param    string       GET varible name to search for
+     * @return   mixed|null   GET variable value
+     */
+    protected function getGetVar ($name)
+    {
+        return $this->params()->fromQuery($name);
+    }
+
+
+
+    /*
+     * HELPER: Get routing parameter or throw an exception
+     *
+     * @param    string   Parameter name to search for
+     * @param    string   Custom exception message (optional)
+     * @return   mixed    Parameter value
+     */
+    protected function getParamOrException ($name, $customExceptionMsg=null)
+    {
+        $value = $this->getParam($name);
+
+        if (NULL === $value) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL routing parameter not found: $name");
+            throw new Exception($eMsg);
+        }
+
+        return $value;
+    }
+
+
+
+    /*
      * HELPER: Get GET parameter or throw an exception
      *
      * @param    string   Parameter name to search for
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getParamOrException ($paramName, $customExceptionMsg=null)
+    protected function getGetVarOrException ($name, $customExceptionMsg=null)
     {
-        $paramValue = $this->params()->fromQuery($paramName);
+        $value = $this->getGetVar($name);
 
-        if (NULL === $paramValue) {
-            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL parameter not found: $paramName");
+        if (NULL === $value) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL GET parameter not found: $name");
             throw new Exception($eMsg);
         }
 
-        return $paramValue;
+        return $value;
     }
 
 
 
     /*
-     * HELPER: Get GET parameter and check if non-empty, or throw an exception
+     * HELPER: Get non-empty routing parameter or throw an exception
      *
      * @param    string   Parameter name to search for
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getParamNonEmptyOrException ($paramName, $customExceptionMsg=null)
+    protected function getParamNonEmptyOrException ($name, $customExceptionMsg=null)
     {
-        $paramValue = $this->getParamOrException($paramName, $customExceptionMsg);
+        $value = $this->getParamOrException($name);
 
-        if (empty($paramValue)) {
-            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL parameter value missing: $paramName");
+        if (empty($value)) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL routing parameter is empty: $name");
             throw new Exception($eMsg);
         }
 
-        return $paramValue;
+        return $value;
+    }
+
+
+
+    /*
+     * HELPER: Get non-empty GET parameter or throw an exception
+     *
+     * @param    string   Parameter name to search for
+     * @param    string   Custom exception message (optional)
+     * @return   mixed    Parameter value
+     */
+    protected function getGetVarNonEmptyOrException ($name, $customExceptionMsg=null)
+    {
+        $value = $this->getGetVarOrException($name);
+
+        if (empty($value)) {
+            $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL GET parameter is empty: $name");
+            throw new Exception($eMsg);
+        }
+
+        return $value;
     }
 }
