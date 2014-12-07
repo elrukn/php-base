@@ -71,6 +71,22 @@ abstract class AbstractEntityCached
 
 
     /*
+     * Delete this entity, remove from cache
+     *
+     * @return   void
+     */
+    public function delete ()
+    {
+        // Get object cache registry
+        $ObjectRegistry  = \Teon\ObjectRegistry\ObjectRegistry::getInstance();
+
+        // Remove from cache - skip check if exists
+        $ObjectRegistry->remove($this);
+    }
+
+
+
+    /*
      * Constructor
      *
      * @param    int|string   Unique entity ID
