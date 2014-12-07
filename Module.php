@@ -78,6 +78,7 @@ implements   AutoloaderProviderInterface
     {
         return array(
            'invokables' => array(
+              'euroFormat' => __NAMESPACE__ .'\View\Helper\EuroFormat',
               'formErrors' => __NAMESPACE__ .'\View\Helper\FormErrors',
               'pageTitle'  => __NAMESPACE__ .'\View\Helper\PageTitle',
            ),
