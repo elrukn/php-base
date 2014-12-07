@@ -137,20 +137,21 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      */
     protected function forwardAction ($action, $params=array())
     {
-        // Get own controller name
-        if (!preg_match("/([_a-zA-Z0-9]+)\$/", get_class($this), $m)) {
-            throw new \TeamDoe\Controller\Exception("Unable to extract short controller name: ". get_class($this));
-        }
-        $controllerShortName = strtolower(preg_replace('/Controller$/', '', $m[1]));
+        // Get controller public name
+        $ctrlPubName = \Teon\Base\Stdlib\ClassUtils::getPublicControllerName(get_class($this));
+
+        // Get original parameters
+        $paramsOrig = $this->params()->fromRoute();
 
         // Combine parameters - if action is explicitly specified in params it is overriden
         $params2pass = array_merge(
+            $paramsOrig,
             $params,
             array('action' => $action)
         );
 
         // Do the forward
-        return $this->forward()->dispatch($controllerShortName, $params2pass);
+        return $this->forward()->dispatch($ctrlPubName, $params2pass);
     }
 
 
@@ -164,20 +165,21 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      */
     protected function redirectAction ($action, $params=array())
     {
-        // Get own controller name
-        if (!preg_match("/([_a-zA-Z0-9]+)\$/", get_class($this), $m)) {
-            throw new \TeamDoe\Controller\Exception("Unable to extract short controller name: ". get_class($this));
-        }
-        $controllerShortName = strtolower(preg_replace('/Controller$/', '', $m[1]));
+        // Get controller public name
+        $ctrlPubName = \Teon\Base\Stdlib\ClassUtils::getPublicControllerName(get_class($this));
+
+        // Get original parameters
+        $paramsOrig = $this->params()->fromRoute();
 
         // Combine parameters - if action is explicitly specified in params it is overriden
         $params2pass = array_merge(
+            $paramsOrig,
             $params,
             array('action' => $action)
         );
 
         // Do the redirect
-        return $this->redirect()->toRoute($controllerShortName, $params2pass);
+        return $this->redirect()->toRoute($ctrlPubName, $params2pass);
     }
 
 
@@ -190,14 +192,42 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      */
     protected function urlAction ($action)
     {
-        // Get own controller name
-        if (!preg_match("/([_a-zA-Z0-9]+)\$/", get_class($this), $m)) {
-            throw new \TeamDoe\Controller\Exception("Unable to extract short controller name: ". get_class($this));
-        }
-        $controllerShortName = strtolower(preg_replace('/Controller$/', '', $m[1]));
+        // Get controller public name
+        $ctrlPubName = \Teon\Base\Stdlib\ClassUtils::getPublicControllerName(get_class($this));
 
         // Return generated URL
-        return $this->url()->fromRoute($controllerShortName, array('action' => $action));
+        return $this->url()->fromRoute($ctrlPubName, array('action' => $action));
+    }
+
+
+
+    /*
+     * HELPER: Get current URL
+     *
+     * @param    string   Action to generate URL for
+     * @return   string   Generated URL
+     */
+    protected function getCurrentUri ()
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
+
+
+
+    /*
+     * HELPER: Get URL to action+id in the same controller
+     *
+     * @param    string   Action to generate URL for
+     * @param    string   ID of object to operate on
+     * @return   string   Generated URL
+     */
+    protected function urlActionId ($action, $id)
+    {
+        // Get controller public name
+        $ctrlPubName = \Teon\Base\Stdlib\ClassUtils::getPublicControllerName(get_class($this));
+
+        // Return generated URL
+        return $this->url()->fromRoute($ctrlPubName, array('action' => $action, 'id' => $id));
     }
 
 
@@ -208,9 +238,9 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string            Parameter name to search for
      * @return   string|int|null   Parameter value, if found
      */
-    protected function getParam ($name)
+    protected function getRouteParam ($name)
     {
-        return $this->params($name);
+        return $this->params()->fromRoute($name);
     }
 
 
@@ -221,7 +251,7 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string       GET varible name to search for
      * @return   mixed|null   GET variable value
      */
-    protected function getGetVar ($name)
+    protected function getGetParam ($name)
     {
         return $this->params()->fromQuery($name);
     }
@@ -235,9 +265,9 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getParamOrException ($name, $customExceptionMsg=null)
+    protected function getRouteParamOrException ($name, $customExceptionMsg=null)
     {
-        $value = $this->getParam($name);
+        $value = $this->getRouteParam($name);
 
         if (NULL === $value) {
             $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL routing parameter not found: $name");
@@ -256,9 +286,9 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getGetVarOrException ($name, $customExceptionMsg=null)
+    protected function getGetParamOrException ($name, $customExceptionMsg=null)
     {
-        $value = $this->getGetVar($name);
+        $value = $this->getGetParam($name);
 
         if (NULL === $value) {
             $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL GET parameter not found: $name");
@@ -277,9 +307,9 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getParamNonEmptyOrException ($name, $customExceptionMsg=null)
+    protected function getRouteParamNonEmptyOrException ($name, $customExceptionMsg=null)
     {
-        $value = $this->getParamOrException($name);
+        $value = $this->getRouteParamOrException($name);
 
         if (empty($value)) {
             $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL routing parameter is empty: $name");
@@ -298,9 +328,9 @@ extends   \Zend\Mvc\Controller\AbstractActionController
      * @param    string   Custom exception message (optional)
      * @return   mixed    Parameter value
      */
-    protected function getGetVarNonEmptyOrException ($name, $customExceptionMsg=null)
+    protected function getGetParamNonEmptyOrException ($name, $customExceptionMsg=null)
     {
-        $value = $this->getGetVarOrException($name);
+        $value = $this->getGetParamOrException($name);
 
         if (empty($value)) {
             $eMsg = ($customExceptionMsg ? $customExceptionMsg : "URL GET parameter is empty: $name");

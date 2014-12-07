@@ -41,9 +41,46 @@ class ClassUtils
      * @param    mixed    Full namespaced class name or object
      * @return   string   Last part of namespaced class name
      */
-    static function getShortClassName ($classNameFullOrObject)
+    static function getBaseClassName ($fullClassNameOrObject)
     {
-        $reflect = new \ReflectionClass($classNameFullOrObject);
+        $reflect = new \ReflectionClass($fullClassNameOrObject);
         return $reflect->getShortName();
+    }
+
+    static function getShortClassName ($fullClassNameOrObject)
+    {
+        trigger_error("This method is deprecated. Use getBaseClassName() instead.", E_USER_DEPRECATED);
+        return self::getBaseClassName($fullClassNameOrObject);
+    }
+
+
+
+    /*
+     * Get only relevant part of MVC controller class name
+     *
+     * @param    mixed    Full namespaced class name or object
+     * @return   string   Last part of namespaced class name
+     */
+    static function getBaseControllerName ($fullClassNameOrObject)
+    {
+        $baseName = self::getBaseClassName($fullClassNameOrObject);
+        return preg_replace('/Controller$/', '', $baseName);
+    }
+
+
+
+    /*
+     * Get public controller class name (by standard ZF2 routing scheme)
+     *
+     * Converts 'CamelCaseController' into 'camel-case'
+     *
+     * @param    mixed    Full namespaced class name or object
+     * @return   string   Last part of namespaced class name
+     */
+    static function getPublicControllerName ($fullClassNameOrObject)
+    {
+        $baseName = self::getBaseControllerName($fullClassNameOrObject);
+
+        return strtolower(preg_replace('/([A-Z])/', '-$1', lcfirst($baseName)));
     }
 }
