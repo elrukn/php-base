@@ -185,6 +185,24 @@ extends   \Zend\Mvc\Controller\AbstractActionController
 
 
     /*
+     * HELPER: Redirect to what 'backUri' GET parameter suggests, or return false
+     *
+     * @return   bool   Whether redirection was triggered or not
+     */
+    protected function redirectToBackUri ()
+    {
+        $backUri = $this->getGetParam('backUri');
+        if ($backUri) {
+            $this->redirect()->toUrl($backUri);
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+    /*
      * HELPER: Get URL to action in the same controller
      *
      * @param    string   Action to generate URL for
