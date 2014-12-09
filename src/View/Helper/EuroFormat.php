@@ -46,6 +46,6 @@ extends   ZVH\AbstractHelper
      */
     public function __invoke ($number)
     {
-        return number_format($number, 2, ',', '.') .' €';
+        return '<nobr>'. number_format($number, 2, ',', '.') .' €</nobr>';
     }
 }
