@@ -49,6 +49,11 @@ extends   \Zend\Validator\Digits
             return false;
         }
 
+        if (!preg_match('/^-?[0-9]+([.,][0-9]+)?$/', $value)) {
+            $this->error(self::INVALID);
+            return false;
+        }
+
         return true;
     }
 }
