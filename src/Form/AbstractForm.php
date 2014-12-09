@@ -61,7 +61,7 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
         parent::__construct($name, $options);
 
         // CSRF protection on all forms
-        $this->addElementCsrf();
+        $this->addElement_csrf();
 
         // Add custom elements and validators
         $this->addElementsAndValidators();
@@ -117,12 +117,33 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
      *
      * @return   string
      */
-    protected function addElementCsrf ()
+    protected function addElement_csrf ()
     {
         $el = new ZFE\Csrf('csrfSecurity');
 
         // Do not add label to hidden elements, it renders if form is rendered with ZfcTwBootstrap
         //$el->setOption('label', 'CSRF Security');
         $this->add($el);
+    }
+
+
+
+    /*
+     * Add element - SUBMIT
+     *
+     * @param    string   Submit button caption/value
+     * @param    string   CSS class(es)
+     * @return   string
+     */
+    protected function addElement_submit ($value, $class)
+    {
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type'        => 'submit',
+                'class'       => $class,
+                'value'       => $value,
+            ),
+        ));
     }
 }
