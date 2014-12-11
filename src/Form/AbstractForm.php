@@ -105,7 +105,7 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
     public function getInputFilterSpecification ()
     {
         if (NULL === $this->inputFilterSpecification) {
-//            throw new Exception("Input filter specification is undefined");
+            throw new Exception("Input filter specification is undefined");
         }
         return $this->inputFilterSpecification;
     }
