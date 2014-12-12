@@ -78,9 +78,10 @@ implements   AutoloaderProviderInterface
     {
         return array(
            'invokables' => array(
-              'euroFormat' => __NAMESPACE__ .'\View\Helper\EuroFormat',
-              'formErrors' => __NAMESPACE__ .'\View\Helper\FormErrors',
-              'pageTitle'  => __NAMESPACE__ .'\View\Helper\PageTitle',
+              'LayoutDataContainer' => __NAMESPACE__ .'\View\Helper\LayoutDataContainer',
+              'EuroFormat'          => __NAMESPACE__ .'\View\Helper\EuroFormat',
+              'FormErrors'          => __NAMESPACE__ .'\View\Helper\FormErrors',
+              'PageTitle'           => __NAMESPACE__ .'\View\Helper\PageTitle',
            ),
         );
    }}
