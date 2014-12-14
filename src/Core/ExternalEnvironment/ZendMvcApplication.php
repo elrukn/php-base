@@ -66,6 +66,18 @@ implements   ExternalEnvironmentInterface
 
 
     /*
+     * Return HTTP Host of client's request
+     *
+     * @return   string
+     */
+    public function getHttpHost ()
+    {
+        return $this->Application->getRequest()->getUri()->getHost();
+    }
+
+
+
+    /*
      * Return remote IP address
      *
      * @return   string
@@ -73,5 +85,47 @@ implements   ExternalEnvironmentInterface
     public function getRemoteIpAddr ()
     {
         return $this->Application->getRequest()->getServer()->get('REMOTE_ADDR');
+    }
+
+
+
+    /*
+     * Do HTTP edirect
+     *
+     * @param    string   URI to redirect to
+     * @param    int      Redirect code to use (optional, 302 is the default)
+     * @return   void
+     */
+    public function redirect ($uri, $statusCode=302)
+    {
+        header("HTTP/1.1 $statusCode Moved");
+        header("Location: $uri");
+        exit;
+    }
+
+
+
+    /*
+     * Do permanent redirect
+     *
+     * @param    string   URI to redirect to
+     * @return   void
+     */
+    public function redirectPermanent ($uri)
+    {
+        $this->redirect($uri, 301);
+    }
+
+
+
+    /*
+     * Do temporary redirect
+     *
+     * @param    string   URI to redirect to
+     * @return   void
+     */
+    public function redirectTemporary ($uri)
+    {
+        $this->redirect($uri, 302);
     }
 }
