@@ -47,6 +47,18 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
 
 
     /*
+     * @var   \Zend\InputFilter\InputFilter
+     */
+    protected $commonElementConfig = array(
+        'attributes' => array(
+            'required'   => true,
+            'class'      => 'form-control',
+        ),
+    );
+
+
+
+    /*
      * Constructor
      *
      * Create form object
@@ -120,10 +132,129 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
     protected function addElement_csrf ()
     {
         $el = new ZFE\Csrf('csrfSecurity');
+        $el->setOptions(array(
+            'csrf_options' => array(
+                'timeout' => 900,
+             ),
+        ));
 
         // Do not add label to hidden elements, it renders if form is rendered with ZfcTwBootstrap
         //$el->setOption('label', 'CSRF Security');
         $this->add($el);
+    }
+
+
+
+    /*
+     * Add element - TEXT
+     *
+     * @param    string   Name of element
+     * @param    string   Element label
+     * @param    array    Custom element configuration overrides (optional)
+     * @return   void
+     */
+    protected function addElement_text ($name, $label, $customElementConfig=array())
+    {
+        $defaultElementConfig = array(
+            'name'       => $name,
+            'attributes' => array(
+                'id'         => $name,
+            ),
+            'options'    => array(
+                'label'      => $label,
+            ),
+        );
+        $elementConfig = array_replace_recursive(
+            $defaultElementConfig,
+            $customElementConfig
+        );
+
+        $this->addElement_text_configArray($elementConfig);
+    }
+
+
+
+    /*
+     * Add element - TEXT - with config array
+     *
+     * @param    array   Custom element configuration overrides
+     * @return   void
+     */
+    protected function addElement_text_configArray ($customElementConfig)
+    {
+        $defaultElementConfig = array(
+            'name'       => 'text',
+            'type'       => 'text',
+            'attributes' => array(
+                'id'         => 'text',
+            ),
+            'options'    => array(
+                'label'      => 'Text input',
+            ),
+        );
+
+        $this->addElement_generic_mergeConfig(
+            $this->commonElementConfig,
+            $defaultElementConfig,
+            $customElementConfig
+        );
+    }
+
+
+
+    /*
+     * Add element - TEXTAREA
+     *
+     * @param    string   Name of element
+     * @param    string   Element label
+     * @param    array    Custom element configuration overrides (optional)
+     * @return   void
+     */
+    protected function addElement_textarea ($name, $label, $customElementConfig=array())
+    {
+        $defaultElementConfig = array(
+            'name'       => $name,
+            'attributes' => array(
+                'id'         => $name,
+            ),
+            'options'    => array(
+                'label'      => $label,
+            ),
+        );
+        $elementConfig = array_replace_recursive(
+            $defaultElementConfig,
+            $customElementConfig
+        );
+
+        $this->addElement_textarea_configArray($elementConfig);
+    }
+
+
+
+    /*
+     * Add element - TEXTAREA - with config array
+     *
+     * @param    array   Custom element configuration overrides
+     * @return   void
+     */
+    protected function addElement_textarea_configArray ($customElementConfig)
+    {
+        $defaultElementConfig = array(
+            'name'       => 'textarea',
+            'type'       => 'textarea',
+            'attributes' => array(
+                'id'         => 'textarea',
+            ),
+            'options'    => array(
+                'label'      => 'Text area input',
+            ),
+        );
+
+        $this->addElement_generic_mergeConfig(
+            $this->commonElementConfig,
+            $defaultElementConfig,
+            $customElementConfig
+        );
     }
 
 
@@ -135,15 +266,60 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
      * @param    string   CSS class(es)
      * @return   string
      */
-    protected function addElement_submit ($value, $class)
+    protected function addElement_submit ($value, $customElementConfig=array())
     {
-        $this->add(array(
-            'name' => 'submit',
+        $defaultElementConfig = array(
             'attributes' => array(
-                'type'        => 'submit',
-                'class'       => $class,
-                'value'       => $value,
+                'value'      => $value,
             ),
-        ));
+        );
+        $elementConfig = array_replace_recursive(
+            $defaultElementConfig,
+            $customElementConfig
+        );
+
+        $this->addElement_submit_configArray($elementConfig);
+    }
+
+
+
+    /*
+     * Add element - SUBMIT - with config array
+     *
+     * @param    array   Custom element configuration overrides
+     * @return   void
+     */
+    protected function addElement_submit_configArray ($customElementConfig)
+    {
+        $defaultElementConfig = array(
+            'name'       => 'submit',
+            'attributes' => array(
+                'id'         => 'submit',
+                'type'       => 'submit',
+                'value'      => 'Submit',
+                'class'      => 'btn btn-danger',
+            ),
+        );
+
+        $this->addElement_generic_mergeConfig(
+            $this->commonElementConfig,
+            $defaultElementConfig,
+            $customElementConfig
+        );
+    }
+
+
+
+    /*
+     * Add generic element by merging multiple configs - variadic function
+     *
+     * @param    array   Multiple arrays of element configuration, to be merged
+     * @param    array   ...
+     * @return   void
+     */
+    protected function addElement_generic_mergeConfig ()
+    {
+        $elementConfigFinal = call_user_func_array('array_replace_recursive', func_get_args());
+        $this->add($elementConfigFinal);
     }
 }
