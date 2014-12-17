@@ -64,5 +64,8 @@ trait   GetterSetterMethodTrait
         if (is_callable('parent::__call')) {
             return parent::__call($name, $args);
         }
+
+        // Else output error
+        trigger_error("Unefined method: $name", E_USER_ERROR);
     }
 }

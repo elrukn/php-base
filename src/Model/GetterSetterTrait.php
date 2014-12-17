@@ -96,6 +96,48 @@ trait   GetterSetterTrait
 
 
     /**
+     * May be defined: call explicit getter if exists
+     *
+     * If user goes about echo $MyObj->prop1, and $MyObj's class uses this GetterSetterTrait,
+     * and user has defined MyObj::getProp1() method, this method is used instead of direcly
+     * getting data from entity object.
+     *
+     * Flow without this feature:
+     * - call to get prop1 ($MyObj->prop1) is issued
+     * - as $MyObj->prop1 is not found, __get magic method is called, from this trait
+     * - __get checks: if entity property exists
+     * - __get checks: if there is read access to it
+     * - __get returns value of entity property
+     *
+     * Flow WITH this feature:
+     * - call to get prop1 ($MyObj->prop1) is issued
+     * - as $MyObj->prop1 is not found, __get magic method is called, from this trait
+     * - __get checks: if entity property exists
+     * - __get checks: if there is a explicit getter defined (called getProp1)
+     * - if yes: __get calls getProp1() and returns returned value from that function (no access is checked)
+     * - if not: continue
+     * - __get checks: if there is read access to it
+     * - __get returns value of entity property
+     *
+     * @var   boolean
+     */
+    //protected $_getterSetter_useExplicitlyDefinedGetterIfExists = true;   // Yes by default
+
+
+
+    /**
+     * May be defined: call explicit setter if exists
+     *
+     * For description see _getterSetterUseExplicitlyDefinedGetterIfExists,
+     * it is exactly analoguous
+     *
+     * @var   boolean
+     */
+    //protected $_getterSetter_useExplicitlyDefinedSetterIfExists = true;   // Yes by default
+
+
+
+    /**
      * Get all entity properties
      *
      * @return   arrray
@@ -124,6 +166,20 @@ trait   GetterSetterTrait
         // Check existance
         if (!$Entity->offsetExists($name)) {
             throw new Exception("Model property does not exist: $name");
+        }
+
+        // Is there explicitly defined getter?
+        if (
+            (
+                !isset($_getterSetter_useExplicitlyDefinedGetterIfExists)
+                ||
+                (true == $_getterSetter_useExplicitlyDefinedGetterIfExists)
+            )
+            &&
+            method_exists($this, 'get'.ucfirst($name))
+        ) {
+            // Yes, use that
+            return call_user_func(array($this, 'get'.ucfirst($name)));
         }
 
         // Check access
@@ -169,6 +225,20 @@ trait   GetterSetterTrait
         // Check existance
         if (!$Entity->offsetExists($name)) {
             throw new Exception("Model property does not exist: $name");
+        }
+
+        // Is there explicitly defined setter?
+        if (
+            (
+                !isset($_getterSetter_useExplicitlyDefinedSetterIfExists)
+                ||
+                (true == $_getterSetter_useExplicitlyDefinedSetterIfExists)
+            )
+            &&
+            method_exists($this, 'set'.ucfirst($name))
+        ) {
+            // Yes, use that
+            return call_user_func(array($this, 'set'.ucfirst($name)), $value);
         }
 
         // Check access
