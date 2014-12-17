@@ -18,12 +18,13 @@ cd ../../../..
 
 ### Get all vendor/*/public and vendor/*/*/public dirs
 #
-VENDOR_PUBLIC_DIRS=`cd vendor && ls -d */public */*/public`
+#VENDOR_PUBLIC_DIRS=`cd vendor && ls -d */public */*/public`
+VENDOR_PUBLIC_DIRS=`cd vendor && ls -d */*/public`
 for VPD in $VENDOR_PUBLIC_DIRS; do
     VPD_PATH_NO1=`dirname $VPD`
     VPD_PATH_NO2=`dirname $VPD_PATH_NO1`
 
-    SYMLINK_DEPTH=`echo "$VPD" | sed -e 's@[^/]@@g' | awk '{ print length }' | xargs expr 2 +`
+    SYMLINK_DEPTH=`echo "$VPD" | sed -e 's@[^/]@@g' | awk '{ print length }' | xargs expr 1 +`
 
     SYMLINK_PUBLIC_BACKPATH=`perl -E "say '../' x $SYMLINK_DEPTH"`
     SYMLINK_DIR="public/vendor/$VPD_PATH_NO2"
