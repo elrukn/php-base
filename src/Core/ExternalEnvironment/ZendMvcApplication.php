@@ -66,6 +66,22 @@ implements   ExternalEnvironmentInterface
 
 
     /*
+     * Check if this request is from console
+     *
+     * @return   bool
+     */
+    public function isRequestFromConsole ()
+    {
+        if ($this->Application->getRequest() instanceof \Zend\Console\Request) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    /*
      * Return HTTP Host of client's request
      *
      * @return   string
