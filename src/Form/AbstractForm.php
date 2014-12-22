@@ -146,6 +146,65 @@ implements       \Zend\InputFilter\InputFilterProviderInterface
 
 
     /*
+     * Add element - CHECKBOX
+     *
+     * @param    string   Name of element
+     * @param    string   Element label
+     * @param    array    Custom element configuration overrides (optional)
+     * @return   void
+     */
+    protected function addElement_checkbox ($name, $label, $customElementConfig=array())
+    {
+        $defaultElementConfig = array(
+            'name'       => $name,
+            'attributes' => array(
+                'id'         => $name,
+            ),
+            'options'    => array(
+                'label'      => $label,
+            ),
+        );
+        $elementConfig = array_replace_recursive(
+            $defaultElementConfig,
+            $customElementConfig
+        );
+
+        $this->addElement_checkbox_configArray($elementConfig);
+    }
+
+
+
+    /*
+     * Add element - CHECKBOX - with config array
+     *
+     * @param    array   Custom element configuration overrides
+     * @return   void
+     */
+    protected function addElement_checkbox_configArray ($customElementConfig)
+    {
+        $defaultElementConfig = array(
+            'name'       => 'checkbox',
+            'type'       => 'checkbox',
+            'attributes' => array(
+                'id'         => 'checkbox',
+            ),
+            'options'    => array(
+                'label'      => 'Checkbox',
+                    'checked_value'   => '1',
+                    'unchecked_value' => '0',
+            ),
+        );
+
+        $this->addElement_generic_mergeConfig(
+            $this->commonElementConfig,
+            $defaultElementConfig,
+            $customElementConfig
+        );
+    }
+
+
+
+    /*
      * Add element - TEXT
      *
      * @param    string   Name of element
