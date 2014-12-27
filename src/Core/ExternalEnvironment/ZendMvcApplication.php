@@ -144,4 +144,17 @@ implements   ExternalEnvironmentInterface
     {
         $this->redirect($uri, 302);
     }
+
+
+
+    /*
+     * Set locale
+     *
+     * @param    string   Locale to set
+     * @return   void
+     */
+    public function setLocale ($locale)
+    {
+        setlocale(LC_ALL, $locale);
+    }
 }

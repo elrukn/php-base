@@ -41,4 +41,14 @@ interface   ExternalEnvironmentInterface
      * @return   string
      */
     public function getRemoteIpAddr ();
+
+
+
+    /*
+     * Set locale
+     *
+     * @param    string   Locale to set
+     * @return   void
+     */
+    public function setLocale ($locale);
 }
