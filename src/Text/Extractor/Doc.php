@@ -74,23 +74,16 @@ implements   ExtractorInterface
             $this->setFilePath($this->getFilePath());
         }
 
-        // Open it first
-        $zip = zip_open($this->getFilePath());
+        // Get contents
+        $rawData = file_get_contents($this->getFilePath());
+        //throw new Exception("Unable to open file: ". $this->getFilePath());
 
-        $fileHandle = fopen($this->getFilePath(), "r");
-        $line  = fread($fileHandle, filesize($this->getFilePath()));
-        $lines = explode(chr(0x0D), $line);
+        // FIXME TODO - parse non-textual data out of content that gets returned
+        // Strip-out all non-alphanumeric characters
+        $rawData = preg_replace('/[^-_a-zA-Z0-9 \n\r]/', '', $rawData);
 
-        $outtext = '';
-        foreach($lines as $thisline) {
-            $pos = strpos($thisline, chr(0x00));
-            if (($pos !== FALSE)||(strlen($thisline)==0))
-            {
-            } else {
-                $outtext .= $thisline." ";
-            }
-        }
-        $outtext = preg_replace("/[^a-zA-Z0-9\s\,\.\-\n\r\t@\/\_\(\)]/","",$outtext);
-        return $outtext;
+
+        // Just return raw document, it contains all text
+        return $rawData;
     }
 }
