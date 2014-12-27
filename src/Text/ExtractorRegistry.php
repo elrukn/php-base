@@ -42,7 +42,7 @@ class   ExtractorRegistry
         'Doc',
         'Docx',
         'Odt',
-//        'Pdf',
+        'Pdf',
         'Txt',
     );
 
