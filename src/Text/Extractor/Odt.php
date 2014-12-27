@@ -42,8 +42,7 @@ implements   ExtractorInterface
      */
     protected $supportedExtensions = array(
         'odt' => true,
-//        'odm' => true,
-//        'ott' => true,
+        'ott' => true,
     );
 
 
@@ -52,9 +51,8 @@ implements   ExtractorInterface
      * Supported media types
      */
     protected $supportedMediaTypes = array(
-        'application/vnd.oasis.opendocument.text' => true,
-//        'application/vnd.oasis.opendocument.text-master' => true,
-//        'application/vnd.oasis.opendocument.text-template' => true,
+        'application/vnd.oasis.opendocument.text'          => true,
+        'application/vnd.oasis.opendocument.text-template' => true,
     );
 
 
@@ -86,13 +84,22 @@ implements   ExtractorInterface
 
         // Read/parse
         $content = '';
+        $contentXmlFound = false;
         while ($zip_entry = zip_read($zip)) {
-            if (zip_entry_open($zip, $zip_entry) == FALSE) continue;
-            if (zip_entry_name($zip_entry) != "word/document.xml") continue;
+            // Skip these entries
+            if (zip_entry_open($zip, $zip_entry) == FALSE)   continue;
+            if (zip_entry_name($zip_entry) != "content.xml") continue;
+
+            // Read content
+            $contentXmlFound = true;
             $content .= zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
             zip_entry_close($zip_entry);
         }
         zip_close($zip);
+
+        if (!$contentXmlFound) {
+            throw new Exception("Failed to extract content.xml from file: ". $this->getFilePath());
+        }
 
         // Reparse entries
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', " ", $content);
