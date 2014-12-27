@@ -67,24 +67,6 @@ abstract class   AbstractExtractor
 
 
     /*
-     * File to parse
-     *
-     * @var   string
-     */
-    protected $filePath = NULL;
-
-
-
-    /*
-     * File to parse
-     *
-     * @var   string
-     */
-    protected $filePath = NULL;
-
-
-
-    /*
      * Contructor
      *
      * @param    string   Path to file to parse
