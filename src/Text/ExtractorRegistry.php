@@ -39,11 +39,35 @@ class   ExtractorRegistry
      * Supported extractors
      */
     protected $extractors = array(
-        'Doc'     => true,
-        'Docx'    => true,
-        'Odt'     => true,
-//        'Pdf'     => true,
+        'Doc',
+        'Docx',
+        'Odt',
+//        'Pdf',
+//        'Txt',
     );
+
+
+
+    /*
+     * Find extractor by extension
+     *
+     * @param    string   Extension to look for
+     * @return   Extractor\ExtractorInterface|NULL
+     */
+    public function findExtractorByExtension ($extension)
+    {
+        // Check all extractors
+        foreach ($this->extractors as $extractorName) {
+            $className = __NAMESPACE__ ."\\Extractor\\$extractorName";
+            $Extractor = new $className();
+            if ($Extractor->isExtensionSupported($extension)) {
+                return $Extractor;
+            }
+        }
+
+        // Extractor was not found
+        return NULL;
+    }
 
 
 
@@ -53,12 +77,32 @@ class   ExtractorRegistry
      * @param    string   Extension to look for
      * @return   Extractor\ExtractorInterface
      */
-    public function findExtractorByExtension ($extension)
+    public function getExtractorByExtension ($extension)
+    {
+        $Extractor = $this->findExtractorByExtension($extension);
+
+        if (NULL === $Extractor) {
+            throw new Exception("Text extractor for extension not found: ". $extension);
+        }
+
+        return $Extractor;
+    }
+
+
+
+    /*
+     * Get extractor by media type
+     *
+     * @param    string   Media type to look for
+     * @return   Extractor\ExtractorInterface|NULL
+     */
+    public function findExtractorByMediaType ($mediaType)
     {
         // Check all extractors
         foreach ($this->extractors as $extractorName) {
-            $Extractor = new Extractor\{$extractorName}();
-            if ($Extractor->isExtensionSupported($extension)) {
+            $className = __NAMESPACE__ ."\\Extractor\\$extractorName";
+            $Extractor = new $className();
+            if ($Extractor->isMediaTypeSupported($mediaType)) {
                 return $Extractor;
             }
         }
@@ -75,17 +119,14 @@ class   ExtractorRegistry
      * @param    string   Media type to look for
      * @return   Extractor\ExtractorInterface
      */
-    public function findExtractorByMediaType ($mediaType)
+    public function getExtractorByMediaType ($mediaType)
     {
-        // Check all extractors
-        foreach ($this->extractors as $extractorName) {
-            $Extractor = new Extractor\{$extractorName}();
-            if ($Extractor->isMediaTypeSupported($mediaType)) {
-                return $Extractor;
-            }
+        $Extractor = $this->findExtractorByMediaType($mediaType);
+
+        if (NULL === $Extractor) {
+            throw new Exception("Text extractor for media type not found: ". $mediaType);
         }
 
-        // Extractor was not found
-        return NULL;
+        return $Extractor;
     }
 }
