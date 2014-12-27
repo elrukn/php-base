@@ -36,11 +36,69 @@ interface   ExternalEnvironmentInterface
 
 
     /*
+     * Initialize external environment
+     *
+     * @return   void
+     */
+    public function initExternalEnvironment ();
+
+
+
+    /*
+     * Check if this request is from console
+     *
+     * @return   bool
+     */
+    public function isRequestFromConsole ();
+
+
+
+    /*
+     * Return HTTP Host of client's request
+     *
+     * @return   string
+     */
+    public function getHttpHost ();
+
+
+
+    /*
      * Return remote IP address
      *
      * @return   string
      */
     public function getRemoteIpAddr ();
+
+
+
+    /*
+     * Do HTTP edirect
+     *
+     * @param    string   URI to redirect to
+     * @param    int      Redirect code to use (optional, 302 is the default)
+     * @return   void
+     */
+    public function redirect ($uri, $statusCode=302);
+
+
+
+    /*
+     * Do permanent redirect
+     *
+     * @param    string   URI to redirect to
+     * @return   void
+     */
+    public function redirectPermanent ($uri);
+
+
+
+    /*
+     * Do temporary redirect
+     *
+     * @param    string   URI to redirect to
+     * @return   void
+     */
+    public function redirectTemporary ($uri);
 
 
 

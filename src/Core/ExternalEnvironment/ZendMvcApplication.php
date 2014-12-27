@@ -54,13 +54,31 @@ implements   ExternalEnvironmentInterface
 
 
     /*
-     * 
+     * Initializer to be called (explicitly, currently not possible from constructor)
      *
-     * @return   string
+     * @return   void
      */
     public function _init ($Application)
     {
         $this->Application = $Application;
+        $this->initExternalEnvironment();
+    }
+
+
+
+    /*
+     * Initialize external environment
+     *
+     * @return   void
+     */
+    public function initExternalEnvironment ($charset='UTF-8', $timezone='UTC', $locale='en_US')
+    {
+        // Charset, timezone and locale - set sane defaults
+        ini_set('default_charset',            $charset);
+        ini_set('mbstring.language',          'Neutral');
+        ini_set('mbstring.internal_encoding', $charset);
+        date_default_timezone_set($timezone);
+        setlocale(LC_ALL, $locale);
     }
 
 
