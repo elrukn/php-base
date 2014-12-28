@@ -43,6 +43,17 @@ abstract class AbstractEntityCached
 
 
     /*
+     * Type
+     *
+     * Type of this entity. If left undefined, base class name is returned
+     *
+     * @var   string|null
+     */
+    protected $type = NULL;
+
+
+
+    /*
      * Factory an entity object with given ID
      *
      * @param    int                      ID of entity to instantiate
@@ -107,5 +118,21 @@ abstract class AbstractEntityCached
     public function getId ()
     {
         return $this->id;
+    }
+
+
+
+    /*
+     * Get unique ID of current entity
+     *
+     * @return   int|string   Unique entity ID
+     */
+    public function getType ()
+    {
+        if (NULL !== $this->type) {
+            return $this->type;
+        } else {
+            return \Teon\Base\Stdlib\ClassUtils::getBaseClassName(get_called_class());
+        }
     }
 }
