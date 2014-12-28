@@ -50,6 +50,15 @@ class Entry
 
 
     /*
+     * Once saved in db, log entry gets unique ID
+     *
+     * @var   int
+     */
+    protected $id;
+
+
+
+    /*
      * Constructor
      *
      * @param    \Zend\Db\TableGateway
@@ -76,6 +85,19 @@ class Entry
     {
         $Statement = $this->dbTable->getSql()->prepareStatementForSqlObject($this->sqlInsert);
         $Statement->execute();
+        $this->id = $this->dbTable->getAdapter()->getDriver()->getConnection()->getLastGeneratedValue();
+    }
+
+
+
+    /*
+     * Get ID of this log entry
+     *
+     * @return   void
+     */
+    public function getId ()
+    {
+        return $this->id;
     }
 
 
