@@ -52,4 +52,32 @@ class StringUtils
 
         return $randomString;
     }
+
+
+
+    /*
+     * Convert CamelCasedString to dash-separated-string
+     *
+     * @param    string   CamelCasedString
+     * @return   string   dash-separated-string
+     */
+    public static function convertCamelCaseToDash ($value)
+    {
+        $Filter = new \Zend\Filter\Word\CamelCaseToDash();
+        return $Filter->filter($value);
+    }
+
+
+
+    /*
+     * Convert dash-separated-string to CamelCasedString
+     *
+     * @param    string   dash-separated-string
+     * @return   string   CamelCasedString
+     */
+    public static function convertDashToCamelCase ($value)
+    {
+        $Filter = new \Zend\Filter\Word\DashToCamelCase();
+        return $Filter->filter($value);
+    }
 }

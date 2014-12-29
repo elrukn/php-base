@@ -29,6 +29,7 @@ return array(
   'Teon\Base\Singleton\AbstractSingleton'                           => __DIR__ . '/src/Singleton/AbstractSingleton.php',
   'Teon\Base\Singleton\SingletonFactoryTrait'                       => __DIR__ . '/src/Singleton/SingletonFactoryTrait.php',
   'Teon\Base\Stdlib\ClassUtils'                                     => __DIR__ . '/src/Stdlib/ClassUtils.php',
+  'Teon\Base\Stdlib\RouteUtils'                                     => __DIR__ . '/src/Stdlib/RouteUtils.php',
   'Teon\Base\Stdlib\SqlUtils'                                       => __DIR__ . '/src/Stdlib/SqlUtils.php',
   'Teon\Base\Stdlib\StringUtils'                                    => __DIR__ . '/src/Stdlib/StringUtils.php',
   'Teon\Base\Text\Exception'                                        => __DIR__ . '/src/Text/Exception.php',
