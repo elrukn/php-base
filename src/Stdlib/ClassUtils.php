@@ -41,13 +41,13 @@ class ClassUtils
      * @param    mixed    Full namespaced class name or object
      * @return   string   Last part of namespaced class name
      */
-    static function getBaseClassName ($fullClassNameOrObject)
+    public static function getBaseClassName ($fullClassNameOrObject)
     {
         $reflect = new \ReflectionClass($fullClassNameOrObject);
         return $reflect->getShortName();
     }
 
-    static function getShortClassName ($fullClassNameOrObject)
+    public static function getShortClassName ($fullClassNameOrObject)
     {
         trigger_error("This method is deprecated. Use getBaseClassName() instead.", E_USER_DEPRECATED);
         return self::getBaseClassName($fullClassNameOrObject);
@@ -61,7 +61,7 @@ class ClassUtils
      * @param    mixed    Full namespaced class name or object
      * @return   string   Last part of namespaced class name
      */
-    static function getBaseControllerName ($fullClassNameOrObject)
+    public static function getBaseControllerName ($fullClassNameOrObject)
     {
         $baseName = self::getBaseClassName($fullClassNameOrObject);
         return preg_replace('/Controller$/', '', $baseName);
@@ -77,7 +77,7 @@ class ClassUtils
      * @param    mixed    Full namespaced class name or object
      * @return   string   Last part of namespaced class name
      */
-    static function getPublicControllerName ($fullClassNameOrObject)
+    public static function getPublicControllerName ($fullClassNameOrObject)
     {
         $baseName = self::getBaseControllerName($fullClassNameOrObject);
 

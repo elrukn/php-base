@@ -41,7 +41,7 @@ class StringUtils
      * @param    int      Desired string length
      * @return   string   Random string
      */
-    static function generateRandomString ($length=32)
+    public static function generateRandomString ($length=32)
     {
         $characters   = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';

@@ -41,7 +41,7 @@ class SqlUtils
      * @param    int      Time to format gmdate to
      * @return   string   Formatted DATETIME
      */
-    static function formatDateTime ($time=NULL)
+    public static function formatDateTime ($time=NULL)
     {
         if (NULL === $time) $time = time();
         return gmdate('Y-m-d H:i:s', $time);
