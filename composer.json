@@ -19,8 +19,8 @@
     },
 
     "suggest": {
-        "phpmailer/phpmailer": "Required for \Teon\Base\Mailer",
-        "smalot/pdfparser": "Required for \Teon\Base\Validator\DocumentContentRegex"
+        "phpmailer/phpmailer": "Required for \\Teon\\Base\\Mailer",
+        "smalot/pdfparser": "Required for \\Teon\\Base\\Validator\\DocumentContentRegex"
     }
 
     "autoload": {
