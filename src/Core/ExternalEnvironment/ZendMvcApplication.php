@@ -74,9 +74,12 @@ implements   ExternalEnvironmentInterface
     public function initExternalEnvironment ($charset='UTF-8', $timezone='UTC', $locale='en_US')
     {
         // Charset, timezone and locale - set sane defaults
-        ini_set('default_charset',            $charset);
-        ini_set('mbstring.language',          'Neutral');
-        ini_set('mbstring.internal_encoding', $charset);
+        ini_set('default_charset',              $charset);
+        ini_set('mbstring.language',            'Neutral');
+        ini_set('mbstring.internal_encoding',   $charset);
+        iconv_set_encoding('internal_encoding', $charset);
+        iconv_set_encoding('input_encoding',    $charset);
+        iconv_set_encoding('output_encoding',   $charset);
         date_default_timezone_set($timezone);
         setlocale(LC_ALL, $locale);
     }
