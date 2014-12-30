@@ -80,4 +80,32 @@ class StringUtils
         $Filter = new \Zend\Filter\Word\DashToCamelCase();
         return $Filter->filter($value);
     }
+
+
+
+    /*
+     * Sanitize string to be acceptable as filename
+     *
+     * Initial implementation source:
+     * http://stackoverflow.com/questions/2668854/sanitizing-strings-to-make-them-url-and-filename-safe
+     *
+     * @param    string   String to sanitize
+     * @param    bool     Force lower case?
+     * @param    bool     Force anal (hm, should this be spelled "rape" instead?:)
+     * @return   string
+     */
+    public static function sanitizeForFilename ($string, $forceLowercase=false, $forceAnal=false)
+    {
+        // Perform the cleaning
+        $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
+                       "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
+                       "â€”", "â€“", ",", "<", ".", ">", "/", "?");
+        $clean = trim(str_replace($strip, "", strip_tags($string)));
+//        $clean = preg_replace('/\s+/', "-", $clean);   // We do not replace spaces
+        $clean = preg_replace('/\s+/', " ", $clean);   // We do not replace spaces, only trim them to one
+        $clean = ($forceAnal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean;
+        $clean = ($forceLowercase) ? mb_strtolower($clean, 'UTF-8') : $clean;
+
+        return $clean;
+    }
 }
